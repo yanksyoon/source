@@ -6,34 +6,27 @@ const SCRIBBLE_TEXT =
 
 export default function ScribblesPage() {
   return (
-    <View>
-      <View style={styles.title}>
-        <Text style={styles.titleText}>Scribbles</Text>
-      </View>
-      <FlatList
-        data={Array(100).fill(null)}
-        renderItem={(item) => (
-          <ScribbleCard
-            date="2024/04/01 10:47"
-            user={{
-              username: "yanks",
-              profileImageUrl: "https://picsum.photos/seed/696/3000/2000",
-            }}
-            text={SCRIBBLE_TEXT}
-            title={"Hello World!"}
-          />
-        )}
-      />
-    </View>
+    <FlatList
+      style={styles.container}
+      data={Array(100).fill(null)}
+      renderItem={(item) => (
+        <ScribbleCard
+          date="2024/04/01 10:47"
+          user={{
+            username: "yanks",
+            profileImageUrl: "https://picsum.photos/seed/696/3000/2000",
+          }}
+          text={SCRIBBLE_TEXT}
+          title={"Hello World!"}
+        />
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  title: {
-    marginTop: 94,
+  container: {
+    marginTop: 96,
     padding: 12,
-  },
-  titleText: {
-    fontSize: 24,
   },
 });
