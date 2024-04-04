@@ -1,5 +1,13 @@
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Image } from "expo-image";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function FriendsPage() {
   return (
@@ -23,7 +31,6 @@ export default function FriendsPage() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 96,
     padding: 12,
   },
 });
@@ -38,9 +45,13 @@ interface IFriendItemProps {
 }
 
 function FriendItem(props: IFriendItemProps) {
+  const { push } = useNavigation<StackNavigationProp<ParamListBase>>();
   return (
     <View style={friendStyles.container}>
-      <View style={friendStyles.profileContainer}>
+      <TouchableOpacity
+        style={friendStyles.profileContainer}
+        onPress={() => push("Profile", { userId: props.user.username })}
+      >
         <View style={friendStyles.imageContainer}>
           <Image
             style={friendStyles.profilePhoto}
@@ -49,7 +60,7 @@ function FriendItem(props: IFriendItemProps) {
           />
         </View>
         <Text style={friendStyles.username}>{props.user.username}</Text>
-      </View>
+      </TouchableOpacity>
       <View>
         <Text style={friendStyles.status}>{props.user.status}</Text>
       </View>

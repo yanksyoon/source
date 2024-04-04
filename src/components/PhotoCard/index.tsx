@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import ActionsBanner from "../ActionsBanner";
+import ReadMoreText from "components/ReadMoreText";
 
 interface IPhotoCardProps {
   date: string;
@@ -14,7 +14,6 @@ interface IPhotoCardProps {
 }
 
 export default function PhotoCard(props: IPhotoCardProps) {
-  const [captionsCollapsed, setCaptionsCollabpsed] = useState(true);
   return (
     <View style={styles.container}>
       <View style={styles.photoContainer}>
@@ -42,11 +41,7 @@ export default function PhotoCard(props: IPhotoCardProps) {
           <View style={styles.dateContainer}>
             <Text style={styles.dateText}>{props.date}</Text>
           </View>
-          <Text onPress={() => setCaptionsCollabpsed((prev) => !prev)}>
-            {props.captions.length > 100 && captionsCollapsed
-              ? props.captions.substring(0, 100).concat("... more")
-              : props.captions}
-          </Text>
+          <ReadMoreText content={props.captions} length={100} />
         </View>
       </View>
     </View>

@@ -1,17 +1,24 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function ActionsBanner() {
+interface IActionsBannerProps {
+  liked?: boolean;
+  onLikeClick?: () => void;
+  onCommentClick?: () => void;
+  onShareClick?: () => void;
+}
+
+export default function ActionsBanner(props: IActionsBannerProps) {
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.text}>🤍</Text>
-      </View>
-      <View>
+      <TouchableOpacity onPress={props.onLikeClick}>
+        <Text style={styles.text}>{props.liked ? "❤️" : "🤍"}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={props.onCommentClick}>
         <Text style={styles.text}>💬</Text>
-      </View>
-      <View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={props.onShareClick}>
         <Text style={styles.text}>🍕</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }

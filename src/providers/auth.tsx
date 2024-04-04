@@ -1,5 +1,5 @@
 import React from "react";
-import { useStorageState } from "../hooks/storage";
+import { useStorageState } from "hooks/storage";
 
 const AuthContext = React.createContext<{
   signIn: () => void;

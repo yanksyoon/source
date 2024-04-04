@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
-import { useSession } from "../../../../../providers/auth";
+import { useSession } from "../providers/auth";
 
-export default function Notifications() {
+export default function NotificationsTab() {
   const { signOut } = useSession();
   return (
     <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import ActionsBanner from "../ActionsBanner";
-import { useState } from "react";
+import ReadMoreText from "components/ReadMoreText";
 
 interface IScribbleCardProps {
   date: string;
@@ -12,7 +12,6 @@ interface IScribbleCardProps {
   text: string;
 }
 export default function ScribbleCard(props: IScribbleCardProps) {
-  const [expanded, setExpanded] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -22,14 +21,11 @@ export default function ScribbleCard(props: IScribbleCardProps) {
         <Text style={styles.dateText}>{props.date}</Text>
       </View>
       <View>
-        <Text
+        <ReadMoreText
           style={styles.contentText}
-          onPress={() => setExpanded((prev) => !prev)}
-        >
-          {props.text.length > 300 && !expanded
-            ? props.text.substring(0, 299).concat("... more")
-            : props.text}
-        </Text>
+          content={props.text}
+          length={300}
+        />
       </View>
       <ActionsBanner />
     </View>

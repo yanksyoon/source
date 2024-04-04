@@ -5,36 +5,49 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Link } from "expo-router";
 import { ImageBackground } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
+import {
+  ParamListBase,
+  RouteProp,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { PrivateStackParamList, ProfileTabParamList } from "navigation/types";
 
-const MENU_ITEMS = [
+const MENU_ITEMS: {
+  to: keyof ReactNavigation.RootParamList;
+  name: string;
+  numItems: number;
+  new: boolean;
+}[] = [
   {
-    to: "/profile/[id]/photos",
+    to: "Photos",
     name: "Photos",
     numItems: 12,
     new: true,
   },
   {
-    to: "/profile/[id]/scribbles",
+    to: "Scribbles",
     name: "Scribbles",
     numItems: 99,
     new: false,
   },
   {
-    to: "/profile/[id]/guestbook",
+    to: "Guestbook",
     name: "Guestbook",
     numItems: 24,
     new: false,
   },
-  { to: "/profile/[id]/friends", name: "Friends", numItems: 300, new: false },
+  { to: "Friends", name: "Friends", numItems: 300, new: false },
 ];
 
 export default function ProfilePage() {
+  const { params } = useRoute<RouteProp<PrivateStackParamList, "Profile">>();
   return (
     <ScrollView style={styles.container} stickyHeaderIndices={[1]}>
-      <ProfileHeader />
+      <ProfileHeader userId={params?.userId || "self"} />
       <View style={styles.menuContainer}>
         {MENU_ITEMS.map((item) => (
           <MenuButton
@@ -63,7 +76,11 @@ const styles = StyleSheet.create({
 const blurhash =
   "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";
 
-function ProfileHeader() {
+interface IProfileHeaderParams {
+  userId: string;
+}
+
+function ProfileHeader(props: IProfileHeaderParams) {
   const isSelf = true;
 
   const onEditPressed = () => {};
@@ -88,6 +105,7 @@ function ProfileHeader() {
             </View>
             <View style={profileStyles.bioContainer}>
               <Text style={profileStyles.bio}>Hello world!</Text>
+              <Text style={profileStyles.bio}>{props.userId}</Text>
             </View>
           </View>
           {isSelf ? (
@@ -166,36 +184,37 @@ const profileStyles = StyleSheet.create({
 });
 
 interface IMenuButtonProps {
-  to: string;
+  to: keyof ReactNavigation.RootParamList;
   name: string;
   numItems?: number;
   new?: boolean;
 }
 
 function MenuButton(props: IMenuButtonProps) {
+  const { push } = useNavigation<StackNavigationProp<ParamListBase>>();
   return (
-    <Link href={{ pathname: props.to, params: { id: "yanks" } }} asChild>
-      <TouchableOpacity key={props.name} style={buttonStyles.button}>
-        <View style={buttonStyles.container}>
-          <View>
-            <Text style={buttonStyles.name}>{props.name}</Text>
-          </View>
-          <View>
-            <Text style={buttonStyles.itemMeta}>
-              {props.numItems > 100 ? "99+" : props.numItems}
-            </Text>
-          </View>
-          <View>
-            <Text style={buttonStyles.newText}>
-              {props.new ? "New!" : null}
-            </Text>
-          </View>
+    <TouchableOpacity
+      key={props.name}
+      style={buttonStyles.button}
+      onPress={() => push(props.to, { userId: props.name })} // TODO: proper user Id
+    >
+      <View style={buttonStyles.container}>
+        <View>
+          <Text style={buttonStyles.name}>{props.name}</Text>
         </View>
         <View>
-          <Text style={buttonStyles.chevron}>{"›"}</Text>
+          <Text style={buttonStyles.itemMeta}>
+            {props.numItems > 100 ? "99+" : props.numItems}
+          </Text>
         </View>
-      </TouchableOpacity>
-    </Link>
+        <View>
+          <Text style={buttonStyles.newText}>{props.new ? "New!" : null}</Text>
+        </View>
+      </View>
+      <View>
+        <Text style={buttonStyles.chevron}>{"›"}</Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 const buttonStyles = StyleSheet.create({
